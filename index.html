@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Header Bidding Implementation</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        text-align: center;
+        margin: 0;
+        padding: 0;
+      }
+      h1 {
+        font-family: "Proxima Nova", sans-serif;
+        font-weight: bold;
+        letter-spacing: -1px;
+        font-size: 36px; /* Increased size of header */
+        color: #4c28bc; /* Header color */
+      }
+      p {
+        font-family: "Karla", sans-serif;
+        letter-spacing: -1px;
+        margin-top: -15px;
+      }
+      #ad-slot-1 {
+        width: 900px; /* Ad slot width */
+        height: 250px; /* Ad slot height */
+        margin: 20px auto;
+        background-color: #f4f4f4;
+        border: 1px solid #ddd;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        letter-spacing: -0.5px;
+        font-style: italic;
+        font-family: "Karla", sans-serif;
+        border-radius: 12px; /* Rounded corners for ad space */
+      }
+    </style>
+    <!-- Include the Karla font -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Karla:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <!-- Include the Proxima Nova font (fallback to a web-safe font if unavailable) -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Proxima+Nova:wght@700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <h1>Header Bidding Demo</h1>
+    <p>
+      This page demos a
+      <strong>basic Prebid.js header bidding</strong> implementation.
+    </p>
+
+    <div id="ad-slot-1">Loading ad...</div>
+
+    <!-- Include Prebid.js -->
+    <script src="build/dist/prebid.js"></script>
+    <script src="build/dist/prebid-config.js"></script>
+    <script>
+      // Request bids and render the winning ad
+      pbjs.requestBids({
+        bidsBackHandler: function () {
+          const winningBid = pbjs.getHighestCpmBids("ad-slot-1")[0];
+          if (winningBid && winningBid.ad) {
+            document.getElementById("ad-slot-1").innerHTML = winningBid.ad;
+            console.log("Winning Bid:", winningBid);
+          } else {
+            // Fallback ad if no valid bid is received
+            document.getElementById("ad-slot-1").innerHTML =
+              '<div class="fallback-ad">No ad available. Please try again later.</div>';
+            console.log("No winning bid or no valid ad.");
+          }
+        },
+      });
+
+      // Listen for the auction end event
+      pbjs.onEvent("auctionEnd", function (auctionData) {
+        console.log("Auction ended:", auctionData);
+        console.log("All bid responses:", pbjs.getBidResponses());
+      });
+
+      // Additional debugging for bid lifecycle events
+      pbjs.onEvent("bidRequested", function (bidRequest) {
+        console.log("Bid requested:", bidRequest);
+      });
+
+      pbjs.onEvent("bidResponse", function (bidResponse) {
+        console.log("Bid response received:", bidResponse);
+      });
+
+      pbjs.onEvent("bidWon", function (bidWon) {
+        console.log("Bid won:", bidWon);
+      });
+
+      // Lazy load the ad when it comes into view
+      const adSlot = document.getElementById("ad-slot-1");
+
+      const observer = new IntersectionObserver((entries, observer) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            pbjs.requestBids({
+              bidsBackHandler: function () {
+                const winningBid = pbjs.getHighestCpmBids("ad-slot-1")[0];
+                if (winningBid && winningBid.ad) {
+                  document.getElementById("ad-slot-1").innerHTML =
+                    winningBid.ad;
+                  console.log("Winning Bid:", winningBid);
+                } else {
+                  // Fallback ad if no valid bid is received
+                  document.getElementById("ad-slot-1").innerHTML =
+                    '<div class="fallback-ad">No ad available. Please try again later.</div>';
+                  console.log("No winning bid or no valid ad.");
+                }
+              },
+            });
+            observer.unobserve(adSlot); // Stop observing after the ad has loaded
+          }
+        });
+      });
+
+      observer.observe(adSlot); // Start observing the ad slot
+    </script>
+  </body>
+</html>
