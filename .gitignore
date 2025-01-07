@@ -1,6 +1,5 @@
 # Built Files
 node_modules/
-build
 
 # Test Files
 test/app
@@ -21,13 +20,12 @@ libraries/analyticsAdapter/examples/libraries
 build/coverage/
 
 # Covers JetBrains IDEs: IntelliJ, RubyMine, PhpStorm, AppCode, PyCharm, CLion
-
 *.iml
 
 ## Directory-based project format:
 .idea/
-# if you remove the above rule, at least ignore the following:
 
+# if you remove the above rule, at least ignore the following:
 # VS Code
 .vscode/
 
@@ -80,3 +78,7 @@ typings/
 
 # MacOS system files
 .DS_Store
+
+# Ignore the build folder, but allow build/dist
+build/*
+!build/dist/

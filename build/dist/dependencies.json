@@ -1,0 +1,21 @@
+{
+  "prebid-core.js": [
+    "chunk-core.js",
+    "creative-renderer-display.js"
+  ],
+  "appnexusBidAdapter.js": [
+    "chunk-core.js",
+    "keywords.js",
+    "appnexusUtils.js",
+    "transformParamsUtils.js",
+    "chunk.js",
+    "categoryTranslationMapping.js"
+  ],
+  "rubiconBidAdapter.js": [
+    "chunk-core.js",
+    "keywords.js",
+    "pbsExtensions.js",
+    "ortbConverter.js",
+    "userSyncUtils.js"
+  ]
+}
