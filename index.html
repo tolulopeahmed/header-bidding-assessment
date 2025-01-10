@@ -24,8 +24,8 @@
         margin-top: -15px;
       }
       #ad-slot-1 {
-        width: 900px; /* Ad slot width */
-        height: 250px; /* Ad slot height */
+        width: 400px;
+        height: 250px;
         margin: 20px auto;
         background-color: #f4f4f4;
         border: 1px solid #ddd;
@@ -61,6 +61,7 @@
     <!-- Include Prebid.js -->
     <script src="build/dist/prebid.js"></script>
     <script src="build/dist/prebid-config.js"></script>
+
     <script>
       // Request bids and render the winning ad
       pbjs.requestBids({
@@ -70,21 +71,20 @@
             document.getElementById("ad-slot-1").innerHTML = winningBid.ad;
             console.log("Winning Bid:", winningBid);
           } else {
-            // Fallback ad if no valid bid is received
+            // Render the fallback ad if no valid bid is received
             document.getElementById("ad-slot-1").innerHTML =
-              '<div class="fallback-ad">No ad available. Please try again later.</div>';
-            console.log("No winning bid or no valid ad.");
+              '<img src="myfundapp.gif" alt="Fallback Ad" style="max-width: 100%; max-height: 100%;">';
+            console.log("No winning bid. Displaying fallback ad.");
           }
         },
       });
 
-      // Listen for the auction end event
+      // Additional debugging events
       pbjs.onEvent("auctionEnd", function (auctionData) {
         console.log("Auction ended:", auctionData);
         console.log("All bid responses:", pbjs.getBidResponses());
       });
 
-      // Additional debugging for bid lifecycle events
       pbjs.onEvent("bidRequested", function (bidRequest) {
         console.log("Bid requested:", bidRequest);
       });
