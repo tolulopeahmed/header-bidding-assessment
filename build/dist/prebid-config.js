@@ -1,47 +1,39 @@
 // Enable debug mode
 pbjs.setConfig({
-  debug: true, // Enable debug mode
+  debug: true,
 });
 
+// Prebid.js Setup with multiple SSPs (Demand Partners)
 var adUnits = [
   {
-    code: "ad-slot-1", // Your ad div ID
+    code: "ad-slot-1",
     mediaTypes: {
       banner: {
-        sizes: [[300, 250]], // Ad sizes
+        sizes: [
+          [300, 250], // Desktop size (300x250)
+          [728, 90], // Mobile size (728x90)
+        ],
       },
     },
     bids: [
       {
         bidder: "appnexus",
         params: {
-          placementId: "13144370", // AppNexus Test Placement ID
+          placementId: "13144370",
         },
       },
       {
         bidder: "openx",
         params: {
-          unit: "539439964", // OpenX Test Unit ID
-          delDomain: "se-demo-d.openx.net", // OpenX Test Domain
+          unit: "539439964",
+          delDomain: "se-demo-d.openx.net",
         },
       },
       {
         bidder: "pubmatic",
         params: {
-          publisherId: "32572", // PubMatic Test Publisher ID
-          adSlot: "38519891@300x250", // PubMatic Test Ad Slot
-        },
-      },
-      {
-        bidder: "criteo",
-        params: {
-          zoneId: "1382489", // Criteo Test Zone ID
-        },
-      },
-      {
-        bidder: "adform",
-        params: {
-          mid: "703", // Adform Test Master ID
+          publisherId: "32572",
+          adSlot: "38519891@300x250",
         },
       },
     ],
@@ -64,15 +56,15 @@ pbjs.setConfig({
       values: [
         {
           mediaType: "banner",
-          size: [300, 250],
+          size: [300, 250], // Desktop size
           deviceType: "desktop",
-          floor: 0.5,
+          floor: 0.5, // Set floor price for desktop
         },
         {
           mediaType: "banner",
-          size: [728, 90],
+          size: [728, 90], // Mobile size
           deviceType: "mobile",
-          floor: 0.2,
+          floor: 0.2, // Set floor price for mobile
         },
       ],
     },
